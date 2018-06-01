@@ -1,12 +1,12 @@
 {
-  "name": "webcloneserver",
+  "name": "heyutong",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "make": "babel-node app.js"
+    "make": "babel-node --harmony app.js"
   },
-  "author": "sanjin",
+  "author": "ckc",
   "license": "ISC",
   "dependencies": {
     "@alicloud/dybaseapi": "^1.0.0",

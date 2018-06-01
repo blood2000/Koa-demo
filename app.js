@@ -22,5 +22,5 @@ router.get('/:db/api/:table', dbcontroller.all)
 router.get('/:db/count/:table/', dbcontroller.count)
 
 app.use(router.routes())
-app.listen(7000)
-console.log('listen:7000')
+app.listen(8000)
+console.log('listen:8000')
