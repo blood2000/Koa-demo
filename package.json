@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "make": "babel-node --harmony app.js"
+    "make": "babel-node app.js"
   },
   "author": "ckc",
   "license": "ISC",
