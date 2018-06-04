@@ -2,11 +2,9 @@ import Koa from "koa"
 import serve from "koa-static2"
 import logger from "koa-logger"
 import Router from "koa-router"
-import jwt from 'koa-jwt'
 import cors from 'koa2-cors'
 import koaBody from 'koa-body'
 import path from "path"
-import fs from 'fs'
 import dbcontroller from "./db/db"
 
 
