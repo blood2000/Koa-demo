@@ -1,1 +1,0 @@
-db.personal.insert({name:'何雨桐',age:'22',brith:'1996-06-02',hobby:'化妆,欺负男朋友',喜欢的动漫:'百变小樱'})
