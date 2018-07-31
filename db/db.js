@@ -101,5 +101,24 @@ class dbcontroller {
     
         ctx.body = count
       }
+      async add(ctx) {
+        let model = ctx.request.body
+        console.log('model11', model)
+        let paramsdb = ctx.params.db
+        let paramstable = ctx.params.table
+        let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
+        let collection = db.collection(paramstable)
+        let seqid = await db.collection('lb_seq_id').findOneAndUpdate({ id: paramstable }, { $inc: { seq: 1 } }, { upsert: true })
+        model.lbseqid = seqid.seq
+        dbunit.changeModelId(model)
+        console.log(model)
+        let inserted = await collection.insert(model)
+        if (!inserted) {
+          this.throw(405, 'The model couldn\'t be added.')
+        }
+        db.close()
+        ctx.body = await model
+      }
+
 }
 export default new dbcontroller()
