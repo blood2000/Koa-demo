@@ -31,7 +31,7 @@
         }
         let filterstr = BASE64.encoder(JSON.stringify(urlobj))
         let url = '?q=' + filterstr
-        axios.get('http://47.98.175.225:8000/heyutong/api/personal/' + url).then(res => {
+        axios.get('http://47.98.175.225:8000/landlord/api/ddz_user/' + url).then(res => {
             console.log("res", res.data)
         })
     });
