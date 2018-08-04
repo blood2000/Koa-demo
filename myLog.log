@@ -1,0 +1,46 @@
+nohup: 忽略输入
+
+> heyutong@1.0.0 make /home/heyuyong
+> babel-node  app.js
+
+listen:8000
+  <-- GET /test.html
+  --> GET /test.html 200 12ms 1.13kb
+  <-- GET /base64.js
+  --> GET /base64.js 200 1ms 5.53kb
+  <-- GET /test.html
+  --> GET /test.html 200 2ms 1.13kb
+  <-- GET /base64.js
+  --> GET /base64.js 200 1ms 5.53kb
+  <-- GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9
+[ { '$match': { _delete: [Object] } },
+  { '$sort': { _id: -1 } },
+  { '$skip': 0 },
+  { '$limit': 10 } ]
+[]
+docs
+  --> GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9 200 29ms 64b
+  <-- GET /test.html
+  --> GET /test.html 200 1ms 1.13kb
+  <-- GET /base64.js
+  --> GET /base64.js 200 1ms 5.53kb
+  <-- GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9
+[ { '$match': { _delete: [Object] } },
+  { '$sort': { _id: -1 } },
+  { '$skip': 0 },
+  { '$limit': 10 } ]
+[]
+docs
+  --> GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9 200 6ms 64b
+  <-- GET /test.html
+  --> GET /test.html 200 1ms 1.13kb
+  <-- GET /base64.js
+  --> GET /base64.js 200 2ms 5.53kb
+  <-- GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9
+[ { '$match': { _delete: [Object] } },
+  { '$sort': { _id: -1 } },
+  { '$skip': 0 },
+  { '$limit': 10 } ]
+[]
+docs
+  --> GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9 200 6ms 64b
