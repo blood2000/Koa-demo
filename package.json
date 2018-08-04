@@ -21,6 +21,7 @@
     "koa-static2": "^0.1.8",
     "koa2-cors": "^2.0.3",
     "lodash": "^4.17.4",
+    "moment": "^2.22.2",
     "mongodb": "^2.2.35"
   },
   "devDependencies": {
