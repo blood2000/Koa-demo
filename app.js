@@ -7,7 +7,7 @@ import koaBody from 'koa-body'
 import path from "path"
 import dbcontroller from "./db/db"
 import alisms from './sms/alisms'
-
+import sms from './sms/sms'
 
 const app = new Koa()
 const router = new Router()
@@ -21,8 +21,10 @@ router.get('/:db/api/:table', dbcontroller.all)
 router.get('/:db/count/:table/', dbcontroller.count)
 router.get('/:db/add/:table/', dbcontroller.add)
 
-//短信
 router.post('/sms/', alisms.alisms)
+router.post('/checksms/', alisms.alichecksms)
+router.post('/:db/sms/', sms.smssend)
+router.get('/getsmssend/', sms.getsmssend)
 
 
 app.use(router.routes())
