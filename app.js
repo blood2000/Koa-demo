@@ -19,7 +19,7 @@ app.use(serve("", path.join(__dirname, 'public')))
 
 router.get('/:db/api/:table', dbcontroller.all)
 router.get('/:db/count/:table/', dbcontroller.count)
-router.get('/:db/add/:table/', dbcontroller.add)
+router.post('/:db/add/:table/', dbcontroller.add)
 
 router.post('/sms/', alisms.alisms)
 router.post('/checksms/', alisms.alichecksms)
