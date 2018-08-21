@@ -4,6 +4,7 @@ import { MongoClient } from 'mongodb'
 import dbunit from './dbunit.js'
 
 class dbcontroller {
+
     async all(ctx) {
         let success = false
         let paramsdb = ctx.params.db
@@ -76,21 +77,23 @@ class dbcontroller {
         }
         console.log('docs')
       }
+
       async count(ctx) {
         let paramsdb = ctx.params.db
         let paramstable = ctx.params.table
         let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
         let collection = db.collection(paramstable)
-    
+        let querybase64 = ctx.query.q
+        let filterObj = JSON.parse(Buffer.from(querybase64, 'base64').toString())
         let findobj = {}
-        for (let item in this.query) {
-          let value = this.query[item]
+        for (let item in filterObj) {
+          let value = filterObj[item]
           if (value == 'true') {
             findobj[item] = true
           } else if (value == 'false') {
             findobj[item] = false
           } else {
-            findobj[item] = this.query[item]
+            findobj[item] = filterObj[item]
           }
         }
         findobj['_delete'] = { '$ne': true }
@@ -101,6 +104,7 @@ class dbcontroller {
     
         ctx.body = count
       }
+
       async add(ctx) {
         let model = ctx.request.body
         console.log('model11', model)
@@ -118,6 +122,61 @@ class dbcontroller {
         }
         db.close()
         ctx.body = await model
+      }
+
+      async modify(ctx) {
+        let model = ctx.request.body
+        let paramsdb = ctx.params.db
+        let paramstable = ctx.params.table
+        let id = ctx.params.id
+        let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
+        let collection = db.collection(paramstable)
+        dbunit.changeModelId(model)
+        let result = await collection.updateOne({ '_id': dbunit.getObjectID(id) }, {
+          $set: model
+        })
+        db.close()
+        ctx.body = result
+      }
+
+      async remove(ctx) {
+        let model = ctx.request.body
+        let paramsdb = ctx.params.db
+        let paramstable = ctx.params.table
+        let id = ctx.params.id
+        let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
+        let collection = db.collection(paramstable)
+        let removed = await collection.updateOne({ '_id': dbunit.getObjectID(id) }, { $set: { '_delete': true } })
+        db.close()
+        if (!removed) {
+          ctx.throw(405, 'Unable to delete.')
+        } else {
+          ctx.body = '{"success":1}'
+        }
+      }
+
+      async deletes(ctx) {
+        let paramsdb = ctx.params.db
+        let paramstable = ctx.params.table
+        let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
+        let collection = db.collection(paramstable)
+    
+        let findobj = {}
+        for (let item in this.query) {
+          let value = this.query[item]
+          if (value == 'true') {
+            findobj[item] = true
+          } else if (value == 'false') {
+            findobj[item] = false
+          } else {
+            findobj[item] = this.query[item]
+          }
+        }
+        dbunit.changeModelId(findobj)
+        let count = await collection.updateMany(findobj, { $set: { '_delete': true } })
+        db.close()
+    
+        ctx.body = count
       }
 
 }
