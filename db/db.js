@@ -84,6 +84,7 @@ class dbcontroller {
         let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
         let collection = db.collection(paramstable)
         let querybase64 = ctx.query.q
+        console.log(querybase64)
         let filterObj = JSON.parse(Buffer.from(querybase64, 'base64').toString())
         let findobj = {}
         for (let item in filterObj) {
@@ -97,7 +98,6 @@ class dbcontroller {
           }
         }
         findobj['_delete'] = { '$ne': true }
-        console.log(findobj, this.query)
         dbunit.changeModelId(findobj)
         let count = await collection.find(findobj).count()
         db.close()
