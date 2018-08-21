@@ -142,9 +142,11 @@ class dbcontroller {
 
       async remove(ctx) {
         let model = ctx.request.body
+        console.log(model)
         let paramsdb = ctx.params.db
         let paramstable = ctx.params.table
         let id = ctx.params.id
+        console.log(id)
         let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
         let collection = db.collection(paramstable)
         let removed = await collection.updateOne({ '_id': dbunit.getObjectID(id) }, { $set: { '_delete': true } })
