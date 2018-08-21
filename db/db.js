@@ -127,6 +127,7 @@ class dbcontroller {
 
       async modify(ctx) {
         let model = ctx.request.body
+        console.log(model)
         let paramsdb = ctx.params.db
         let paramstable = ctx.params.table
         let id = ctx.params.id
