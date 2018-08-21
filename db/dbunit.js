@@ -37,12 +37,9 @@ class dbunit {
         }
     }
     changeModelId(model) {
-       
         for (var item in model) {
-            console.log(item)
             if (typeof item == 'string') {
                 if (item.indexOf('_id') >= 0) {
-                    console.log(item)
                     try {
                         if (typeof model[item] === 'object') {
                             dbunit.changeArrayModelId(model[item])
