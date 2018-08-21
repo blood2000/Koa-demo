@@ -84,8 +84,9 @@ class dbcontroller {
         let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
         let collection = db.collection(paramstable)
         let querybase64 = ctx.query.q
-        console.log(filterObj)
+      
         let filterObj = JSON.parse(Buffer.from(querybase64, 'base64').toString())
+        console.log(filterObj)
         let findobj = {}
         for (let item in filterObj) {
           let value = filterObj[item]
