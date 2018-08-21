@@ -5,42 +5,22 @@ nohup: 忽略输入
 
 listen:8000
   <-- GET /test.html
-  --> GET /test.html 200 12ms 1.13kb
-  <-- GET /base64.js
-  --> GET /base64.js 200 1ms 5.53kb
-  <-- GET /test.html
-  --> GET /test.html 200 2ms 1.13kb
-  <-- GET /base64.js
-  --> GET /base64.js 200 1ms 5.53kb
-  <-- GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9
-[ { '$match': { _delete: [Object] } },
-  { '$sort': { _id: -1 } },
-  { '$skip': 0 },
-  { '$limit': 10 } ]
-[]
-docs
-  --> GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9 200 29ms 64b
-  <-- GET /test.html
-  --> GET /test.html 200 1ms 1.13kb
-  <-- GET /base64.js
-  --> GET /base64.js 200 1ms 5.53kb
-  <-- GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9
-[ { '$match': { _delete: [Object] } },
-  { '$sort': { _id: -1 } },
-  { '$skip': 0 },
-  { '$limit': 10 } ]
-[]
-docs
-  --> GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9 200 6ms 64b
-  <-- GET /test.html
-  --> GET /test.html 200 1ms 1.13kb
+  --> GET /test.html 200 14ms 1.13kb
   <-- GET /base64.js
   --> GET /base64.js 200 2ms 5.53kb
-  <-- GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9
-[ { '$match': { _delete: [Object] } },
-  { '$sort': { _id: -1 } },
-  { '$skip': 0 },
-  { '$limit': 10 } ]
-[]
-docs
-  --> GET /heyutong/api/personal/?q=eyJwYWdlIjowLCJwcmVwYWdlIjoxMCwiYSI6W10sInMiOnRydWV9 200 6ms 64b
+  <-- GET /favicon.ico
+  --> GET /favicon.ico 404 2ms -
+
+  Error: invalid JSON, only supports object and array
+      at parse (/home/heyuyong/node_modules/co-body/lib/json.js:60:13)
+      at /home/heyuyong/node_modules/co-body/lib/json.js:45:22
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+
+  Error: invalid JSON, only supports object and array
+      at parse (/home/heyuyong/node_modules/co-body/lib/json.js:60:13)
+      at /home/heyuyong/node_modules/co-body/lib/json.js:45:22
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
