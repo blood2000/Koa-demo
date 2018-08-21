@@ -133,7 +133,9 @@ class dbcontroller {
         let id = ctx.params.id
         let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
         let collection = db.collection(paramstable)
+        console.log('111')
         dbunit.changeModelId(model)
+        console.log("222")
         let result = await collection.updateOne({ '_id': dbunit.getObjectID(id) }, {
           $set: model
         })
