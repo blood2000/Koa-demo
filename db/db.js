@@ -134,8 +134,10 @@ class dbcontroller {
         // let paramstable = ctx.params.table
         // let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
         // let collection = db.collection(paramstable)
-        let find = await all(ctx)
-        console.log(find)
+        all(ctx).then(
+          find => console.log(find),
+          e => console.log(e)
+        )
         //db.close()
         ctx.body = find
       
