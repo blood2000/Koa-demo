@@ -134,7 +134,7 @@ class dbcontroller {
         let paramstable = ctx.params.table
         let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
         let collection = db.collection(paramstable)
-        let find = await collection.find()
+        let find = await collection.find().pretty()
         console.log(find)
 
       }
