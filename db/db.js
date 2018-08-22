@@ -117,7 +117,8 @@ class dbcontroller {
         let collection = db.collection(paramstable)
         let seqid = await db.collection('lb_seq_id').findOneAndUpdate({ id: paramstable }, { $inc: { seq: 1 } }, { upsert: true })
         model.lbseqid = seqid.seq
-        console.log( model.lbseqid)
+        console.log('ssss', seqid.seq)
+        console.log('eeee~~~~',  model.lbseqid )
         dbunit.changeModelId(model)
         let inserted = await collection.insert(model)
         if (!inserted) {
