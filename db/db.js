@@ -129,14 +129,14 @@ class dbcontroller {
       }
 
       async login(ctx){
-        let model = ctx.request.body
-        let paramsdb = ctx.params.db
-        let paramstable = ctx.params.table
-        let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
-        let collection = db.collection(paramstable)
-        let find = await collection.find()
+        // let model = ctx.request.body
+        // let paramsdb = ctx.params.db
+        // let paramstable = ctx.params.table
+        // let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
+        // let collection = db.collection(paramstable)
+        let find = await this.all(ctx)
         console.log(find)
-        db.close()
+        //db.close()
         ctx.body = find
       
 
