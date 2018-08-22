@@ -174,9 +174,11 @@ class dbcontroller {
             findobj[item] = false
           } else {
             findobj[item] = this.query[item]
+            console.log(findobj[item])
           }
         }
         dbunit.changeModelId(findobj)
+        console.log(findobj)
         let count = await collection.updateMany(findobj, { $set: { '_delete': true } })
         db.close()
     
