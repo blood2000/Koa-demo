@@ -18,10 +18,11 @@ app.use(logger())
 app.use(serve("", path.join(__dirname, 'public')))
 
 router.get('/:db/count/:table/', dbcontroller.count)
-router.get('/:db/api/:table', dbcontroller.all)
-router.post('/:db/add/:table/', dbcontroller.add)
+router.get('/:db/get/:table', dbcontroller.all)
+router.post('/:db/post/:table/', dbcontroller.add)
 router.delete('/:db/delete/:table/:id', dbcontroller.remove)
 router.put('/:db/put/:table/:id', dbcontroller.modify)
+
 
 router.post('/sms/', alisms.alisms)
 router.post('/checksms/', alisms.alichecksms)
