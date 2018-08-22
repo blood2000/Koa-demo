@@ -2,6 +2,8 @@
 
 import { MongoClient } from 'mongodb'
 import dbunit from './dbunit.js'
+import jwt from 'koa-jwt'
+import _ from 'lodash'
 
 class dbcontroller {
 
@@ -125,6 +127,17 @@ class dbcontroller {
         ctx.body = await model
       }
 
+      async login(ctx){
+        let model = ctx.request.body
+        let paramsdb = ctx.params.db
+        let paramstable = ctx.params.table
+        let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
+        let collection = db.collection(paramstable)
+        let find = await collection.find()
+        console.log(find)
+
+      }
+
       async modify(ctx) {
         let model = ctx.request.body
         console.log(model)
@@ -159,31 +172,31 @@ class dbcontroller {
         }
       }
 
-      async deletes(ctx) {
-        let paramsdb = ctx.params.db
-        let paramstable = ctx.params.table
-        let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
-        let collection = db.collection(paramstable)
+      // async deletes(ctx) {
+      //   let paramsdb = ctx.params.db
+      //   let paramstable = ctx.params.table
+      //   let db = await MongoClient.connect(dbunit.getDBStr(paramsdb))
+      //   let collection = db.collection(paramstable)
     
-        let findobj = {}
-        for (let item in this.query) {
-          let value = this.query[item]
-          if (value == 'true') {
-            findobj[item] = true
-          } else if (value == 'false') {
-            findobj[item] = false
-          } else {
-            findobj[item] = this.query[item]
-            console.log(findobj[item])
-          }
-        }
-        dbunit.changeModelId(findobj)
-        console.log(findobj)
-        let count = await collection.updateMany(findobj, { $set: { '_delete': true } })
-        db.close()
+      //   let findobj = {}
+      //   for (let item in this.query) {
+      //     let value = this.query[item]
+      //     if (value == 'true') {
+      //       findobj[item] = true
+      //     } else if (value == 'false') {
+      //       findobj[item] = false
+      //     } else {
+      //       findobj[item] = this.query[item]
+      //       console.log(findobj[item])
+      //     }
+      //   }
+      //   dbunit.changeModelId(findobj)
+      //   console.log(findobj)
+      //   let count = await collection.updateMany(findobj, { $set: { '_delete': true } })
+      //   db.close()
     
-        ctx.body = count
-      }
+      //   ctx.body = count
+      // }
 
 }
 export default new dbcontroller()

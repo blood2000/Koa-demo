@@ -5,7 +5,7 @@ import dbunit from '../db/dbunit'
 const accessKeyId = 'LTAIk1hNMcPITKIH'
 const secretAccessKey = 'rJVo5WIvmwYz1dz1KIRMqAfLyOtdFU'
 const queueName = 'Alicom-Queue-1420938370661882-'
-const smsdb = 'italk'
+const smsdb = 'landlord '
 
 class alisms {
 
