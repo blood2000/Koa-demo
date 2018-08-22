@@ -136,6 +136,9 @@ class dbcontroller {
         let collection = db.collection(paramstable)
         let find = await collection.find()
         console.log(find)
+        db.close()
+        ctx.body = find
+      
 
       }
 

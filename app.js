@@ -20,7 +20,7 @@ app.use(serve("", path.join(__dirname, 'public')))
 router.get('/:db/count/:table/', dbcontroller.count)
 router.get('/:db/get/:table', dbcontroller.all)
 router.post('/:db/post/:table/', dbcontroller.add)
-router.post('/:db/login/:table/', dbcontroller.login)
+router.get('/:db/login/:table/', dbcontroller.login)
 router.delete('/:db/delete/:table/:id', dbcontroller.remove)
 router.put('/:db/put/:table/:id', dbcontroller.modify)
 
