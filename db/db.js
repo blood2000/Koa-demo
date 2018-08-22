@@ -120,8 +120,8 @@ class dbcontroller {
     console.log("!!!!!!!", seqid)
     let num = seqid.value.seq.toString()
     let zero = ""
-    if (num.length < 6) {
-      for (var i = 0; i < (6 - num.length); i++) {
+    if (num.length < 8) {
+      for (var i = 0; i < (8 - num.length); i++) {
         zero += 0
       }
     }
