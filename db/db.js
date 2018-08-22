@@ -103,7 +103,9 @@ class dbcontroller {
         }
         findobj['_delete'] = { '$ne': true }
         dbunit.changeModelId(findobj)
-        let count = await collection.find(findobj).count()
+        console.log(findobj)
+        let count = await collection.find(findobj)
+        //.count()
         db.close()
         ctx.body = count
       }
