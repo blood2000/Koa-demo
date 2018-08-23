@@ -187,11 +187,13 @@ class dbcontroller {
             '_delete': { '$ne': true }
           }
         })
+        console.log("~~~~~~",options)
         options.push({ '$limit': 1 })
         let cursor = table.aggregate(options)
         cursor.toArray().then(obj => {
+          console.log(obj)
           if (obj.length > 0) {
-            console.log(obj)
+           
             logindata.login = true
             logindata.user = obj[0].tel
             logindata.name = obj[0].name
