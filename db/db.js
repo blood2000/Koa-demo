@@ -185,8 +185,8 @@ class dbcontroller {
         let options = []
         options.push({
           '$match': {
-            'pwd': user.pwd,
-            'tel': user.tel,
+            'pwd': filterObj.pwd,
+            'tel': filterObj.tel,
             'lock': false,
             '_delete': { '$ne': true }
           }
