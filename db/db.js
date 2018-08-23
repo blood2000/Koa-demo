@@ -171,11 +171,13 @@ class dbcontroller {
     }
   }
   //登陆
+
   loginuser(user) {
     return new Promise((resolve) => {
       let logindata = { 'login': false }
-      MongoClient.connect(dbunit.getDBStr('landlord')).then(db => {
+      MongoClient.connect(dbunit.getdbstr('landlord')).then(db => {
         let table = db.collection('ddz_user')
+        console.log("11111")
         let options = []
         options.push({
           '$match': {
@@ -188,14 +190,14 @@ class dbcontroller {
         options.push({ '$limit': 1 })
         let cursor = table.aggregate(options)
         cursor.toArray().then(obj => {
-          console.log("~~~~~~~~~~",obj)
           if (obj.length > 0) {
+            console.log(obj)
             logindata.login = true
-            logindata.tel = obj[0].tel
+            logindata.user = obj[0].tel
             logindata.name = obj[0].name
             logindata.db = obj[0].db
             logindata._id = obj[0]._id
-            console.log(logindata)
+
             resolve(logindata)
           } else {
             resolve(logindata)
@@ -206,21 +208,22 @@ class dbcontroller {
     })
   }
   async login(ctx) {
+    console.log('heheheheh')
     let user = ctx.request.body
-    console.log('heheheheh',user)
     var dbmodel = await loginuser(user)
-   // var token = ''
+    var token = ''
     var code = -1
     var message = '登录失败'
     if (dbmodel.login) {
-    //  token = jwt.sign(dbmodel, 'nanguo', { expiresIn: 60 * 60 * 24 * 30 })
+      token = jwt.sign(dbmodel, 'nanguo', { expiresIn: 60 * 60 * 24 * 30 })
       code = 0
       message = '登录成功'
     }
+
     let nowtime = new Date().getTime()
     this.body = {
       code,
-     // token,
+      token,
       message,
       account: dbmodel,
       nowtime
