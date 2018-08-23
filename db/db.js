@@ -206,9 +206,10 @@ class dbcontroller {
     })
   }
   async login(ctx) {
-    console.log('heheheheh')
+   
     let user = ctx.request.body
-    var dbmodel = await loginuser(user)
+    console.log('heheheheh',user)
+    var dbmodel = await this.loginuser(user)
    // var token = ''
     var code = -1
     var message = '登录失败'
