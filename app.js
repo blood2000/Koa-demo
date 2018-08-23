@@ -23,6 +23,8 @@ router.post('/:db/post/:table/', dbcontroller.add)
 router.delete('/:db/delete/:table/:id', dbcontroller.remove)
 router.put('/:db/put/:table/:id', dbcontroller.modify)
 
+router.post('/login/', dbcontroller.login)
+router.get('/loginuser/', dbcontroller.loginuser)
 
 router.post('/sms/', alisms.alisms)
 router.post('/checksms/', alisms.alichecksms)

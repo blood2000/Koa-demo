@@ -170,6 +170,64 @@ class dbcontroller {
       ctx.body = '{"success":1}'
     }
   }
+  //登陆
+
+  loginuser(user) {
+    return new Promise((resolve) => {
+      let logindata = { 'login': false }
+      MongoClient.connect(dbunit.getdbstr('landlord')).then(db => {
+        let table = db.collection('ddz_user')
+        let options = []
+        options.push({
+          '$match': {
+            'pwd': user.pwd,
+            'tel': user.tel,
+            'lock': false,
+            '_delete': { '$ne': true }
+          }
+        })
+        options.push({ '$limit': 1 })
+        let cursor = table.aggregate(options)
+        cursor.toArray().then(obj => {
+          if (obj.length > 0) {
+            logindata.login = true
+            logindata.tel = obj[0].tel
+            logindata.name = obj[0].name
+            logindata.db = obj[0].db
+            logindata._id = obj[0]._id
+            console.log(logindata)
+            resolve(logindata)
+          } else {
+            resolve(logindata)
+          }
+          db.close()
+        })
+      })
+    })
+  }
+  async login(ctx) {
+    console.log('heheheheh')
+    let user = ctx.request.body
+    var dbmodel = await loginuser(user)
+   // var token = ''
+    var code = -1
+    var message = '登录失败'
+    if (dbmodel.login) {
+    //  token = jwt.sign(dbmodel, 'nanguo', { expiresIn: 60 * 60 * 24 * 30 })
+      code = 0
+      message = '登录成功'
+    }
+
+    let nowtime = new Date().getTime()
+    this.body = {
+      code,
+     // token,
+      message,
+      account: dbmodel,
+      nowtime
+    }
+  }
+
 
   // async deletes(ctx) {
   //   let paramsdb = ctx.params.db
