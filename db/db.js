@@ -175,7 +175,7 @@ class dbcontroller {
   loginuser(user) {
     return new Promise((resolve) => {
       let logindata = { 'login': false }
-      MongoClient.connect(dbunit.getdbstr('landlord')).then(db => {
+      MongoClient.connect(dbunit.getDBStr('landlord')).then(db => {
         let table = db.collection('ddz_user')
         console.log("11111")
         let options = []
