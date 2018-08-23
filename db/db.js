@@ -171,7 +171,6 @@ class dbcontroller {
     }
   }
   //登陆
-
   loginuser(user) {
     return new Promise((resolve) => {
       let logindata = { 'login': false }
@@ -189,6 +188,7 @@ class dbcontroller {
         options.push({ '$limit': 1 })
         let cursor = table.aggregate(options)
         cursor.toArray().then(obj => {
+          console.log("~~~~~~~~~~",obj)
           if (obj.length > 0) {
             logindata.login = true
             logindata.tel = obj[0].tel
@@ -206,10 +206,9 @@ class dbcontroller {
     })
   }
   async login(ctx) {
-   
     let user = ctx.request.body
     console.log('heheheheh',user)
-    var dbmodel = await this.loginuser(user)
+    var dbmodel = await loginuser(user)
    // var token = ''
     var code = -1
     var message = '登录失败'
