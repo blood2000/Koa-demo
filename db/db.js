@@ -217,7 +217,6 @@ class dbcontroller {
       code = 0
       message = '登录成功'
     }
-
     let nowtime = new Date().getTime()
     this.body = {
       code,
