@@ -17,6 +17,7 @@ class dbcontroller {
     let count = 0
     try {
       filterObj = JSON.parse(Buffer.from(querybase64, 'base64').toString())
+      console.log(filterObj)
       success = filterObj.s
     } catch (error) {
 
@@ -177,16 +178,11 @@ class dbcontroller {
       let logindata = { 'login': false }
       MongoClient.connect(dbunit.getDBStr('landlord')).then(db => {
         let table = db.collection('ddz_user')
-        let querybase64 = user.query.q
-        let filterObj = null
-        console.log("11111",querybase64)
-        filterObj = JSON.parse(Buffer.from(querybase64, 'base64').toString())
-        console.log("11111",filterObj)
         let options = []
         options.push({
           '$match': {
-            'pwd': filterObj.pwd,
-            'tel': filterObj.tel,
+            'pwd': user.pwd,
+            'tel': user.tel,
             'lock': false,
             '_delete': { '$ne': true }
           }
@@ -194,7 +190,6 @@ class dbcontroller {
         console.log("~~~~~~",options)
         options.push({ '$limit': 1 })
         let cursor = table.aggregate(options)
-        console.log(cursor)
         cursor.toArray().then(obj => {
           console.log(obj)
           if (obj.length > 0) {
@@ -203,6 +198,7 @@ class dbcontroller {
             logindata.name = obj[0].name
             logindata.db = obj[0].db
             logindata._id = obj[0]._id
+            console.log(logindata)
             resolve(logindata)
           } else {
             resolve(logindata)
