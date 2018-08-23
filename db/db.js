@@ -177,7 +177,11 @@ class dbcontroller {
       let logindata = { 'login': false }
       MongoClient.connect(dbunit.getDBStr('landlord')).then(db => {
         let table = db.collection('ddz_user')
-        console.log("11111",user)
+        let querybase64 = user.query.q
+        let filterObj = null
+        console.log("11111",querybase64)
+        filterObj = JSON.parse(Buffer.from(querybase64, 'base64').toString())
+        console.log("11111",filterObj)
         let options = []
         options.push({
           '$match': {
