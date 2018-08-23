@@ -194,6 +194,7 @@ class dbcontroller {
         console.log("~~~~~~",options)
         options.push({ '$limit': 1 })
         let cursor = table.aggregate(options)
+        console.log(cursor)
         cursor.toArray().then(obj => {
           console.log(obj)
           if (obj.length > 0) {
