@@ -177,7 +177,7 @@ class dbcontroller {
       let logindata = { 'login': false }
       MongoClient.connect(dbunit.getDBStr('landlord')).then(db => {
         let table = db.collection('ddz_user')
-        console.log("11111")
+        console.log("11111",user)
         let options = []
         options.push({
           '$match': {
@@ -193,13 +193,11 @@ class dbcontroller {
         cursor.toArray().then(obj => {
           console.log(obj)
           if (obj.length > 0) {
-           
             logindata.login = true
             logindata.user = obj[0].tel
             logindata.name = obj[0].name
             logindata.db = obj[0].db
             logindata._id = obj[0]._id
-
             resolve(logindata)
           } else {
             resolve(logindata)
