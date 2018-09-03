@@ -81,6 +81,150 @@ class dbcontroller {
     console.log('docs')
   }
 
+  async allmore(ctx) {
+    let success = false
+    let paramsdb = null
+    let querybase64 = ctx.query.q
+    let paramsdbname = {}
+    let datastr = {}
+    let filterObjs = null
+    try {
+      // 将请求的数据进行解码
+      filterObjs = JSON.parse(Buffer.from(querybase64, 'base64').toString())
+      paramsdb = filterObjs.dball
+      success = filterObjs.s
+      paramsdbname = filterObjs.db
+    } catch (error) {
+      console.log(error)
+    }
+    if (success) {
+      let db = await MongoClient.connect(dbunit.getDBStr(paramsdbname))
+      let imgarray = []
+      let objarray = []
+      for (let item in paramsdb) {
+        console.log(paramsdb[item])
+        let paramstablename = paramsdb[item].table
+        let filterObj = paramsdb[item].a
+        let subopt = paramsdb[item].b
+        let sort = paramsdb[item].sort || { '_id': -1 }
+        let limit = Number.parseInt(paramsdb[item].prepage || 30)
+        let skip = Number.parseInt(paramsdb[item].page || 0) * limit
+        let collection = db.collection(paramstablename)
+        let options = []
+        let findmatch = false
+        if (filterObj) {
+          filterObj.forEach((element) => {
+            let obj = {}
+            let type = '$' + element.type
+            obj[type] = element.data || {}
+            dbunit.changeModelId(obj[type])
+            if (type == '$project') {
+              obj[type]._id = 1
+              obj[type]._delete = 1
+            }
+            if (type == '$match') {
+              findmatch = true
+              obj[type]['_delete'] = { '$ne': true }
+            }
+            options.push(obj)
+          })
+        }
+        if (!findmatch) {
+          let obj = {}
+          obj['$match'] = {}
+          obj['$match']['_delete'] = { '$ne': true }
+          options.push(obj)
+        }
+        if (subopt) {
+          let inarray = []
+          let submatch = {}
+          submatch['$match'] = {}
+          if (datastr[subopt.index]) {
+            datastr[subopt.index].data.forEach(iditem => {
+              inarray.push(dbunit.getObjectID(iditem[subopt.oid]))
+            })
+          }
+          submatch['$match'][subopt.sid] = { '$in': inarray }
+          dbunit.changeModelId(submatch['$match'])
+          options.push(submatch)
+        }
+
+        options.push({ $group: { _id: null, count: { $sum: 1 } } })
+        let cursor = collection.aggregate(options)
+        let group = await cursor.toArray()
+        let count = 0
+        if (group && group.length > 0) {
+          count = group[0].count
+        }
+        console.log(count)
+        options.pop()
+        let arr = Object.keys(sort)
+        if (arr.length > 0) {
+          options.push({ '$sort': sort })
+        }
+        options.push({ '$skip': skip })
+        options.push({ '$limit': limit })
+        console.log(options, sort)
+        let tablecursor = collection.aggregate(options)
+        let data = []
+        data = await tablecursor.toArray()
+        dbcontroller.getimgurl(data, imgarray, objarray)
+        datastr[item] = {
+          data,
+          'count': count,
+          'table': paramstablename
+        }
+        //console.log(datastr[item], imgarray, objarray)
+      }
+      if (imgarray.length > 0) {
+        let collection = db.collection('images')
+        let options = []
+        let objproject = {}
+        let submatch = {}
+        objproject['$project'] = { fileurl: true, _id: true }
+        submatch['$match'] = {}
+        submatch['$match']['_id'] = { '$in': imgarray }
+        dbunit.changeModelId(submatch['$match'])
+
+        options.push(objproject)
+        options.push(submatch)
+        let tablecursor = collection.aggregate(options)
+        let data = []
+        data = await tablecursor.toArray()
+        console.log(data, imgarray)
+        objarray.forEach((item) => {
+          let itemobj = item.obj
+          let itemkey = item.key
+          let itemimg = itemkey.replace('_id', '')
+          if (_.isArray(itemobj[itemkey])) {
+            itemobj[itemimg] = []
+            itemobj[itemkey].forEach((imgid) => {
+              console.log(itemobj[itemkey], imgid)
+              let imgobj = _.find(data, { _id: imgid })
+              if (imgobj) {
+                itemobj[itemimg].push('http://' + imgobj.fileurl)
+              }
+            })
+          } else {
+            //console.log(item, itemobj[itemkey], itemkey)
+            let imgobj = _.find(data, { _id: itemobj[itemkey] })
+            if (imgobj) {
+              itemobj[itemimg] = 'http://' + imgobj.fileurl
+            }
+          }
+        })
+      }
+      db.close()
+    }
+    let nowtime = new Date().getTime()
+    console.log(datastr)
+    ctx.body = await {
+      'data': datastr,
+      'nowtime': nowtime
+    }
+  }
+
+
   async count(ctx) {
     let paramsdb = ctx.params.db
     let paramstable = ctx.params.table
@@ -187,7 +331,7 @@ class dbcontroller {
             '_delete': { '$ne': true }
           }
         })
-        console.log("~~~~~~",options)
+        console.log("~~~~~~", options)
         options.push({ '$limit': 1 })
         let cursor = table.aggregate(options)
         cursor.toArray().then(obj => {
